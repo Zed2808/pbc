@@ -14,7 +14,7 @@ enum class Suit {
 std::string suit_to_string(Suit suit);
 std::string suit_to_char(Suit suit);
 
-char value_to_char(int value);
+std::string value_to_char(int value);
 
 class Card {
 	private:
@@ -41,6 +41,7 @@ class Deck {
 		Card draw();
 		void add_card(Card card);
 		int get_cards_left();
+		std::string to_string();
 };
 
 #endif

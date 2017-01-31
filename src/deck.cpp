@@ -39,25 +39,25 @@ std::string suit_to_char(Suit suit) {
 	}
 }
 
-char value_to_char(int value) {
+std::string value_to_char(int value) {
 	switch(value) {
 		case 10:
-			return 'T';
+			return "T";
 			break;
 		case 11:
-			return 'J';
+			return "J";
 			break;
 		case 12:
-			return 'Q';
+			return "Q";
 			break;
 		case 13:
-			return 'K';
+			return "K";
 			break;
 		case 14:
-			return 'A';
+			return "A";
 			break;
 		default:
-			return value;
+			return std::to_string(value);
 	}
 }
 
@@ -97,6 +97,7 @@ void Deck::fill_deck() {
 }
 
 void Deck::shuffle() {
+	srand(time(0));
 	std::random_shuffle(deck.begin(), deck.end());
 }
 
@@ -113,4 +114,12 @@ void Deck::add_card(Card card) {
 
 int Deck::get_cards_left() {
 	return cards_left;
+}
+
+std::string Deck::to_string() {
+	std::string output = "";
+	for(Card card : deck) {
+		output += value_to_char(card.get_value()) + suit_to_char(card.get_suit()) + " ";
+	}
+	return output;
 }
