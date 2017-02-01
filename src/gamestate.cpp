@@ -11,10 +11,11 @@ Gamestate::Gamestate() {
 	bidder = -1;                // No initial bidder
 	round = -1;                 // Bidding round = -1
 
-	// Create player hands/trick piles
+	// Create player hands/trick piles/scores
 	for(int i = 0; i < num_players; i++) {
 		hands.push_back(Deck(false));
 		tricks.push_back(Deck(false));
+		scores.push_back(0);
 	}
 }
 

@@ -25,6 +25,7 @@ class Gamestate {
 		Deck middle = Deck(false);
 		std::vector<Deck> hands;
 		std::vector<Deck> tricks;
+		std::vector<int> scores;
 };
 
 #endif

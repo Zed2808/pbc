@@ -8,6 +8,7 @@ class Game {
 		void start();
 		int bidding_round();
 		int do_round();
+		void score_hands();
 
 		Gamestate gs;
 		PB pb;

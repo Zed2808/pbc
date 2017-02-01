@@ -20,9 +20,22 @@ void Game::start() {
 
 	std::cout << "Player " << gs.active_player + 1 << " won the bidding round with a bid of " << gs.bid << "." << std::endl;
 
-	// Do actual game rounds
+	// Play out one hand
 	for(gs.round = 0; gs.round < gs.hand_size; gs.round++) {
-		do_round();
+		gs.active_player = do_round();
+	}
+
+	// Print each player's tricks after the hand
+	for(int i = 0; i < gs.num_players; i++) {
+		std::cout << "Player " << i+1 << " took " << gs.tricks[i].to_string() << "." << std::endl;
+	}
+
+	// Score each player's hand and increment their score accordingly
+	score_hands();
+
+	std::cout << "SCORE" << std::endl;
+	for(int player = 0; player < gs.num_players; player++) {
+		std::cout << "Player " << player + 1 << " has " << gs.scores[player] << " points." << std::endl;
 	}
 }
 
@@ -211,6 +224,89 @@ int Game::do_round() {
 	// Clear middle
 	gs.middle = Deck(false);
 
-	// Set lead out player to trick taker
-	gs.active_player = gs.taker;
+	// Return winner of the round
+	return gs.taker;
+}
+
+void Game::score_hands() {
+	int top_trump = 0;
+	int top_taker;
+	int low_trump = 14;
+	int low_taker;
+	int jack_taker = -1;
+	std::vector<int> round_scores(gs.num_players);
+	std::vector<int> pips(gs.num_players);
+
+	// For each stack of tricks
+	for(int player = 0; player < gs.num_players; player++) {
+		// For each card in the stack
+		for(int card = 0; card < gs.hand_size; card++) {
+			// If card is trump
+			if(gs.tricks[player][card].get_suit() == gs.trump) {
+				// Card is higher than current top
+				if(gs.tricks[player][card].get_value() > top_trump) {
+					top_trump = gs.tricks[player][card].get_value();
+					top_taker = player;
+				}
+
+				// Card is lower than current low
+				if(gs.tricks[player][card].get_value() < low_trump) {
+					low_trump = gs.tricks[player][card].get_value();
+					low_taker = player;
+				}
+
+				// Card is jack
+				if(gs.tricks[player][card].get_value() == 11) {
+					jack_taker = player;
+				}
+
+				// Add pips
+				switch(gs.tricks[player][card].get_value()) {
+					case 10:
+						pips[player] += 10;
+						break;
+					case 11:
+						pips[player] += 1;
+						break;
+					case 12:
+						pips[player] += 2;
+						break;
+					case 13:
+						pips[player] += 3;
+						break;
+					case 14:
+						pips[player] += 4;
+						break;
+				}
+			}
+		}
+	}
+
+	// Find game point taker
+	int max_pips = 0;
+	int game_taker;
+	for(int player = 0; player < gs.num_players; player++) {
+		if(pips[player] > max_pips) {
+			game_taker = player;
+			max_pips = pips[player];
+		}
+	}
+
+	// Add up round scores
+	round_scores[top_taker]++;
+	round_scores[low_taker]++;
+	if(jack_taker > -1) gs.scores[jack_taker]++;
+	round_scores[game_taker]++;
+
+	// Bidder does not make their bid
+	if(round_scores[gs.bidder] < gs.bid) {
+		// Lose points=bid and set round score to zero (bidder gets nothing when game scores are incremented)
+		gs.scores[gs.bidder] -= gs.bid;
+		round_scores[gs.bidder] = 0;
+	}
+
+	// Increment game scores
+	for(int player = 0; player < gs.num_players; player++) {
+		gs.scores[player] += round_scores[player];
+	}
 }
