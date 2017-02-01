@@ -5,7 +5,8 @@
 
 class PB {
 	public:
-		int bid(Gamestate gamestate);
+		int bid(Gamestate gs);
+		int play_card(Gamestate gs);
 };
 
 #endif

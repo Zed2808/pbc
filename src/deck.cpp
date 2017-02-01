@@ -5,16 +5,12 @@ std::string suit_to_string(Suit suit) {
 	switch(suit) {
 		case Suit::SPADES:
 			return "SPADES";
-			break;
 		case Suit::HEARTS:
 			return "HEARTS";
-			break;
 		case Suit::DIAMONDS:
 			return "DIAMONDS";
-			break;
 		case Suit::CLUBS:
 			return "CLUBS";
-			break;
 		default:
 			return "SPADES";
 	}
@@ -24,16 +20,12 @@ std::string suit_to_char(Suit suit) {
 	switch(suit) {
 		case Suit::SPADES:
 			return "\u2660";
-			break;
 		case Suit::HEARTS:
 			return "\u2661";
-			break;
 		case Suit::DIAMONDS:
 			return "\u2662";
-			break;
 		case Suit::CLUBS:
 			return "\u2663";
-			break;
 		default:
 			return "\u2660";
 	}
@@ -79,6 +71,10 @@ int Card::get_value() {
 	return value;
 }
 
+std::string Card::to_string() {
+	return value_to_char(get_value()) + suit_to_char(get_suit());
+}
+
 Deck::Deck(bool filled) {
 	if(filled) fill_deck();
 }
@@ -112,14 +108,22 @@ void Deck::add_card(Card card) {
 	deck.push_back(card);
 }
 
+void Deck::remove_card(int index) {
+	deck.erase(deck.begin() + index);
+}
+
 int Deck::get_cards_left() {
 	return cards_left;
+}
+
+int Deck::size() {
+	return deck.size();
 }
 
 std::string Deck::to_string() {
 	std::string output = "";
 	for(Card card : deck) {
-		output += value_to_char(card.get_value()) + suit_to_char(card.get_suit()) + " ";
+		output += card.to_string() + " ";
 	}
 	return output;
 }

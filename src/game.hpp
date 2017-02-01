@@ -5,10 +5,9 @@
 
 class Game {
 	public:
-		Game();
 		void start();
 		int bidding_round();
-		int play_card();
+		int do_round();
 
 		Gamestate gs;
 		PB pb;

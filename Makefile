@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11 -Wall -c
+CFLAGS = -std=c++11 -Wall -c -g
 OBJS = obj/deck.o obj/game.o obj/gamestate.o obj/main.o obj/pb.o
 EXECUTABLE = pb
 

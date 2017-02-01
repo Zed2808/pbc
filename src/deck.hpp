@@ -27,6 +27,7 @@ class Card {
 
 		Suit get_suit();
 		int get_value();
+		std::string to_string();
 };
 
 class Deck {
@@ -36,11 +37,14 @@ class Deck {
 
 	public:
 		Deck(bool filled);
+		Card operator [](int i) { return deck[i]; }
 		void fill_deck();
 		void shuffle();
 		Card draw();
 		void add_card(Card card);
+		void remove_card(int index);
 		int get_cards_left();
+		int size();
 		std::string to_string();
 };
 

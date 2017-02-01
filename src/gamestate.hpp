@@ -9,15 +9,22 @@ class Gamestate {
 		int next_player();
 
 		int num_players;
+		int hand_size;
 		int dealer;
 		int active_player;
 		int min_bid;
 		int bid;
 		int bidder;
 		int round;
+		int turn;
+		int taker;
+		Card top_card;
+		Suit trump;
+		Suit lead_suit;
 		Deck deck = Deck(true);
-		Deck hand0 = Deck(false);
-		Deck hand1 = Deck(false);
+		Deck middle = Deck(false);
+		std::vector<Deck> hands;
+		std::vector<Deck> tricks;
 };
 
 #endif
